@@ -26,22 +26,31 @@ module HTTP
     
   class Response
     def initialize()
+      @text = ""
       @headers = {}
       @code = 200
       @code_message = "OK"
     end
     
-    attr_reader :code
-    attr_reader :code_message
-    attr_reader :headers
+    def write(text)
+      @text += text
+    end
+    
+    attr_accessor :code
+    attr_accessor :code_message
+    attr_accessor :headers
     
     def to_s
-      rval = <<-RES
-200 HTTP/1.1 OK
-Content-Length: 0
-Content-Type: text/plain
-
-RES
+      rval = []
+      
+      rval.push(@code.to_s + " HTTP/1.1 " + @code_message)
+      rval.push("Content-Length: #{@text.length}")
+      rval.push("Content-Type: text/plain")
+      @headers.each{|header,value| rval.push("#{header}: #{value}")}
+      rval.push("")
+      rval.push(@text)
+      
+      rval.join("\n")
     end
   end
 end

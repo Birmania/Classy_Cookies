@@ -56,5 +56,42 @@ RES
         subject.to_s.should == @res
       end
     end
+    
+    context 'Test filled attributes' do
+      before(:each) do
+        subject.write <<-RESP
+Response content :
+Content
+RESP
+        subject.code = 201
+        subject.code_message = 'Created'
+        subject.headers['Set-Cookie'] = 'Session_id=id1'
+      end
+      
+      it 'Filled headers' do
+        subject.headers.should == {'Set-Cookie' => 'Session_id=id1'}
+      end
+      
+      it 'Filled code' do
+        subject.code.should == 201
+      end
+      
+      it 'Filled code message' do
+        subject.code_message.should == 'Created'
+      end
+      
+      it 'Filled response' do
+        @res = <<-RES
+201 HTTP/1.1 Created
+Content-Length: 27
+Content-Type: text/plain
+Set-Cookie: Session_id=id1
+
+Response content :
+Content
+RES
+        subject.to_s.should == @res
+      end
+    end
   end
 end
