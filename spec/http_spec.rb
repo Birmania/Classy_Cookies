@@ -31,3 +31,30 @@ describe HTTP::Request do
   end
 end
 
+describe HTTP::Response do
+  context 'Basic response' do
+    context 'Test empty attributes' do
+      it 'Default headers' do
+        subject.headers.should == {}
+      end
+      
+      it 'Default code' do
+        subject.code.should == 200
+      end
+      
+      it 'Default code message' do
+        subject.code_message.should == 'OK'
+      end
+      
+      it 'Default response' do
+        @res = <<-RES
+200 HTTP/1.1 OK
+Content-Length: 0
+Content-Type: text/plain
+
+RES
+        subject.to_s.should == @res
+      end
+    end
+  end
+end

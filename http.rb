@@ -24,5 +24,24 @@ module HTTP
     attr_accessor :version
   end
     
+  class Response
+    def initialize()
+      @headers = {}
+      @code = 200
+      @code_message = "OK"
+    end
+    
+    attr_reader :code
+    attr_reader :code_message
+    attr_reader :headers
+    
+    def to_s
+      rval = <<-RES
+200 HTTP/1.1 OK
+Content-Length: 0
+Content-Type: text/plain
 
+RES
+    end
+  end
 end
